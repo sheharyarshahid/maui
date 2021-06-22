@@ -25,6 +25,7 @@ namespace Microsoft.Maui
 		public static void UpdateTextColor(this TextView textView, ITextStyle textStyle, ColorStateList? defaultColor)
 		{
 			var textColor = textStyle.TextColor;
+
 			if (textColor == null)
 				textView.SetTextColor(defaultColor);
 			else

@@ -34,7 +34,14 @@ namespace Microsoft.Maui.Controls.Hosting
 			{ typeof(Stepper), typeof(StepperHandler) },
 			{ typeof(Switch), typeof(SwitchHandler) },
 			{ typeof(TimePicker), typeof(TimePickerHandler) },
-			{ typeof(Page), typeof(PageHandler) }
+			{ typeof(Page), typeof(PageHandler) },
+			{ typeof(Shapes.Ellipse), typeof(ShapeViewHandler) },
+			{ typeof(Shapes.Line), typeof(ShapeViewHandler) },
+			{ typeof(Shapes.Path), typeof(ShapeViewHandler) },
+			{ typeof(Shapes.Polygon), typeof(ShapeViewHandler) },
+			{ typeof(Shapes.Polyline), typeof(ShapeViewHandler) },
+			{ typeof(Shapes.Rectangle), typeof(ShapeViewHandler) },
+			{ typeof(Layout), typeof(LayoutHandler) },
 		};
 
 		public static IMauiHandlersCollection AddMauiControlsHandlers(this IMauiHandlersCollection handlersCollection)
