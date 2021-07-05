@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Maui;
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui;
 using Controls.Core.Platform.iOS.Extensions;
 
 namespace Microsoft.Maui.Controls.Handlers
 {
-	public partial class LabelHandler : Microsoft.Maui.Handlers.LabelHandler
+	public partial class LabelHandler : Maui.Handlers.LabelHandler
 	{
 		public static void MapTextType(LabelHandler handler, Label label)
 		{
