@@ -75,7 +75,7 @@ namespace Microsoft.Maui.Handlers
 #if WINDOWS
 			false;
 #else
-			VirtualView?.Clip != null || VirtualView?.Shadow != null;
+			VirtualView?.Clip != null || (VirtualView?.Shadow != null && !VirtualView.Shadow.IsEmpty);
 #endif
 
 		public NativeView? ContainerView { get; private protected set; }
