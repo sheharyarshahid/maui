@@ -97,7 +97,6 @@ namespace Microsoft.Maui.Controls
 			_children.Add(child);
 			if (child is Element element)
 				element.Parent = this;
-			InvalidateMeasure();
 			AddToHandler(child);
 		}
 
@@ -111,7 +110,6 @@ namespace Microsoft.Maui.Controls
 
 			_children.Clear();
 			ClearHandler();
-			InvalidateMeasure();
 		}
 
 		public bool Contains(IView item)
@@ -139,9 +137,7 @@ namespace Microsoft.Maui.Controls
 			if (child is Element element)
 				element.Parent = this;
 
-			InvalidateMeasure();
-
-			AddToHandler(child);
+			InsertIntoHandler(index, child);
 		}
 
 		public virtual bool Remove(IView child)
@@ -153,8 +149,6 @@ namespace Microsoft.Maui.Controls
 
 			if (child is Element element)
 				element.Parent = null;
-
-			InvalidateMeasure();
 
 			RemoveFromHandler(child);
 
@@ -175,14 +169,7 @@ namespace Microsoft.Maui.Controls
 			if (child is Element element)
 				element.Parent = null;
 
-			InvalidateMeasure();
-
 			RemoveFromHandler(child);
-		}
-
-		void RemoveFromHandler(IView view)
-		{
-			Handler?.Invoke(nameof(ILayoutHandler.Remove), view);
 		}
 
 		void AddToHandler(IView view)
@@ -193,6 +180,16 @@ namespace Microsoft.Maui.Controls
 		void ClearHandler() 
 		{
 			Handler?.Invoke(nameof(ILayoutHandler.Clear));
+		}
+
+		void RemoveFromHandler(IView view)
+		{
+			Handler?.Invoke(nameof(ILayoutHandler.Remove), view);
+		}
+
+		void InsertIntoHandler(int index, IView view) 
+		{
+			Handler?.Invoke(nameof(ILayoutHandler.Insert), (index, view));
 		}
 
 		void IPaddingElement.OnPaddingPropertyChanged(Thickness oldValue, Thickness newValue)
