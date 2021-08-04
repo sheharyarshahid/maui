@@ -6,7 +6,7 @@ using Microsoft.Maui.Layouts;
 namespace Microsoft.Maui.Controls
 {
 	[ContentProperty(nameof(Children))]
-	public abstract class Layout : View, Microsoft.Maui.ILayout, IList<IView>, IBindableLayout, IPaddingElement, IVisualTreeElement
+	public abstract class Layout : View, Maui.ILayout, IList<IView>, IBindableLayout, IPaddingElement, IVisualTreeElement
 	{
 		ReadOnlyCastingList<Element, IView> _logicalChildren;
 
@@ -20,7 +20,6 @@ namespace Microsoft.Maui.Controls
 		// This provides a Children property for XAML 
 		public IList<IView> Children => this;
 
-		public ILayoutHandler LayoutHandler => Handler as ILayoutHandler;
 		IList IBindableLayout.Children => _children;
 
 		internal override IReadOnlyList<Element> LogicalChildrenInternal =>
@@ -47,7 +46,7 @@ namespace Microsoft.Maui.Controls
 					oldElement.Parent = null;
 				}
 
-				LayoutHandler?.Remove(old);
+				RemoveFromHandler(old);
 
 				_children[index] = value;
 
@@ -56,7 +55,7 @@ namespace Microsoft.Maui.Controls
 					newElement.Parent = this;
 				}
 
-				LayoutHandler?.Add(value);
+				AddToHandler(value);
 
 				InvalidateMeasure();
 			}
@@ -99,7 +98,7 @@ namespace Microsoft.Maui.Controls
 			if (child is Element element)
 				element.Parent = this;
 			InvalidateMeasure();
-			LayoutHandler?.Add(child);
+			AddToHandler(child);
 		}
 
 		public void Clear()
@@ -137,7 +136,7 @@ namespace Microsoft.Maui.Controls
 
 			InvalidateMeasure();
 
-			LayoutHandler?.Add(child);
+			AddToHandler(child);
 		}
 
 		public virtual bool Remove(IView child)
@@ -152,7 +151,7 @@ namespace Microsoft.Maui.Controls
 
 			InvalidateMeasure();
 
-			LayoutHandler?.Remove(child);
+			RemoveFromHandler(child);
 
 			return result;
 		}
@@ -173,7 +172,17 @@ namespace Microsoft.Maui.Controls
 
 			InvalidateMeasure();
 
-			LayoutHandler?.Remove(child);
+			RemoveFromHandler(child);
+		}
+
+		void RemoveFromHandler(IView view)
+		{
+			Handler?.Invoke(nameof(ILayoutHandler.Remove), view);
+		}
+
+		void AddToHandler(IView view)
+		{
+			Handler?.Invoke(nameof(ILayoutHandler.Add), view);
 		}
 
 		void IPaddingElement.OnPaddingPropertyChanged(Thickness oldValue, Thickness newValue)
